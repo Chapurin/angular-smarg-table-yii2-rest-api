@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+<html ng-app="app">
+
+<head>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" />
+    <script src="assets/angular/angular.min.js"></script>
+    <script src="assets/bootstrap/ui-bootstrap-tpls-0.11.0.min.js"></script>
+    <script src="assets/smart-table/dist/smart-table.min.js"></script>
+    <script src="assets/angular/angular-route.min.js"></script>
+    <script src="assets/angular/angular-resource.min.js"></script>
+    <script src="assets/angular/angular-cookies.min.js"></script>
+
+    <script src="assets/angular-translate/angular-translate.min.js"></script>
+    <script src="assets/angular-translate/angular-translate-storage-cookie.min.js"></script>
+    <script src="assets/angular-translate/angular-translate-loader-static-files.min.js"></script>
+    <script src="assets/angular-translate/tmhDynamicLocale.js"></script>
+    <script src="app.js"></script>
+    <style>
+        .st-sort-ascent,.st-sort-descent{
+            color: #2aabd2;
+        }
+        .table-header th{
+            cursor: pointer;
+        }
+        .st-sort-ascent:before {
+            content: '\25B2';
+        }
+        .st-sort-descent:before {
+            content: '\25BC';
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <h1>Smart-table with pagination, filtering, sort</h1>
+
+
+    <div  ng-controller="LocaleCtrl">
+        <!-- CHANGE LANGUAGE -->
+        <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                <i class="glyphicon glyphicon-menu-hamburger"></i>
+                Language ({{model.selectedLocale}})
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li ng-repeat="(key, value) in availableLocales">
+                    <a href="#" ng-click="changeLocale(key)">
+                        <img src="assets/img/flag_icons/{{key | limitTo:2:3}}.png" />
+                        {{value}}
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <br>
+
+
+    <form ng-controller="TableCtrl">
+
+        <table class="table table-bordered table-striped" st-table="items" st-pipe="callServer">
+            <thead>
+            <tr class="table-header">
+                <th colspan="7"><button class="pull-right btn btn-xs" ng-click="refreshFilter();"><span class="glyphicon glyphicon-refresh"></span> {{ 'Reset filter' | translate }}</button></th>
+            </tr>
+
+            <!-- HEADERS -->
+            <tr class="table-header">
+                <th style="width: 100px" st-sort="id">ID</th>
+                <th st-sort="country">{{ 'Country' | translate }}</th>
+                <th st-sort="city">{{ 'City' | translate }}</th>
+                <th st-sort="street">{{ 'Street' | translate }}</th>
+                <th st-sort="house">{{ 'House' | translate }}</th>
+                <th st-sort="postcode">{{ 'Postcode' | translate }}</th>
+                <th st-sort="datetime">{{ 'Date' | translate }}</th>
+            </tr>
+            <tr>
+                <th><input st-search="id" class="input-sm form-control" type="search"/></th>
+                <th><input st-search="country" class="input-sm form-control" type="search"/></th>
+                <th><input st-search="city" class="input-sm form-control" type="search"/></th>
+                <th><input st-search="street" class="input-sm form-control" type="search"/></th>
+                <th><st-number-range predicate="house" lower="query.lower" higher="query.higher"></st-number-range></th>
+                <th><input st-search="postcode" class="input-sm form-control" type="search"/></th>
+                <th><st-date-range predicate="datetime" before="query.before" after="query.after"></st-date-range></th>
+
+            </tr>
+            </thead>
+            <!-- CONTENT -->
+            <tbody ng-show="!isLoading">
+            <tr ng-repeat="row in items">
+                <td>{{row.id}}</td>
+                <td>{{row.country}}</td>
+                <td>{{row.city}}</td>
+                <td>{{row.street}}</td>
+                <td>{{row.house}}</td>
+                <td>{{row.postcode}}</td>
+                <td>{{row.datetime}}</td>
+            </tr>
+            </tbody>
+            <tbody ng-show="isLoading">
+            <tr>
+                <td colspan="7" class="text-center">Loading ... </td>
+            </tr>
+            </tbody>
+            <!-- PAGINATION -->
+            <tfoot>
+            <tr>
+                <td colspan="7" class="text-center">
+                    <div
+                            st-template="pagination.html"
+                            st-pagination=""
+                            st-items-by-page="itemsByPage"></div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </form>
+</div>
+
+</body>
+
+</html>

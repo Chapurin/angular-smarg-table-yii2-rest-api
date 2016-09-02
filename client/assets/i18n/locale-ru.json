@@ -1,0 +1,16 @@
+{
+  "PARAGRAPH": "Да будет русский.",
+  "Country": "Страна",
+  "City": "Город",
+  "Street": "Улица",
+  "House": "Дом",
+  "Postcode": "Индекс",
+  "Date": "Дата",
+  "after": "с",
+  "before": "до",
+  "higher": "от",
+  "lower": "до",
+  "FIRST": "ПЕРВАЯ",
+  "LAST": "ПОСЛЕДНЯЯ",
+  "Reset filter": "Сброс фильтра"
+}
