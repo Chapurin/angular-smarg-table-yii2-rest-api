@@ -4,6 +4,7 @@
 
 
 Client side configuration:
+
 client/app.js
 ```
 .factory('Resource', function($resource) {
@@ -12,7 +13,9 @@ client/app.js
 ```
          
 Dump sql file: server/data/yii2-ang.sql.zip
+
 Data base connection:
+
 server/config/db.php
 ```
 return [
