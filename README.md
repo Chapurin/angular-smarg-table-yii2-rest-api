@@ -1,5 +1,5 @@
 
-**# angular-smarg-table-yii2-rest-api**
+###**Angular Smart-table with yii2 rest api**
 
 
 
