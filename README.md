@@ -1,28 +1,46 @@
 
 ###**Angular Smart-table with yii2 rest api**
+------------
 
 
 
-Client side configuration:
+###Database configuration
 
-client/app.js
-```
-.factory('Resource', function($resource) {
-     return $resource('http://movie:81/server/web/address/index/');
-}
-```
-         
-Dump sql file: server/data/yii2-ang.sql.zip
+Execute dump sql file into data base `server/data/yii2-ang.sql.zip`
 
-Data base connection:
+Edit the file `server/config/db.php` with real data to connect to your data base, for example:
 
-server/config/db.php
-```
+```php
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=yii2-ang',
+    'dsn' => 'mysql:host=localhost;dbname=yii2-angular',
     'username' => 'root',
     'password' => '',
     'charset' => 'utf8',
 ];
 ```
+
+###Client side configuration
+
+Edit the file `client/app.js` with url to server side
+```
+.factory('Resource', function($resource) {
+     return $resource('http://localhost/server/web/address/index/');
+}
+```
+         
+
+
+
+###Run
+You can then access the server side through the following URL:
+
+~~~
+http://localhost/server/web/address/index/
+~~~
+
+And you can then access the client side through the following URL:
+
+~~~
+http://localhost/client/index.html
+~~~

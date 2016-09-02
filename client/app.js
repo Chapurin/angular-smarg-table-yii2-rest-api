@@ -10,6 +10,7 @@
             'ngResource'
         ])
         .factory('Resource', function($resource) {
+            // Настройка подключения к Rest API
             return $resource('http://movie:81/server/web/address/index/');
         })
         // i18n: LANGUAGE
@@ -119,7 +120,7 @@
                     before: '=',
                     after: '='
                 },
-                templateUrl: 'stDateRange.html',
+                templateUrl: 'view/stDateRange.html',
 
                 link: function (scope, element, attr, table) {
 
@@ -179,7 +180,7 @@
                     lower: '=',
                     higher: '='
                 },
-                templateUrl: 'stNumberRange.html',
+                templateUrl: 'view/stNumberRange.html',
                 link: function (scope, element, attr, table) {
                     var inputs = element.find('input');
                     var inputLower = ng.element(inputs[0]);
