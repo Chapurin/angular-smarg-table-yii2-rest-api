@@ -2,6 +2,8 @@
 ###**Angular Smart-table with yii2 rest api**
 ------------
 
+###Install
+Unzip or colone this repository in Web folder.
 
 
 ###Database configuration
