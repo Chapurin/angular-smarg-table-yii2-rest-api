@@ -100,7 +100,12 @@
             </tbody>
             <tbody ng-show="isLoading">
             <tr>
-                <td colspan="7" class="text-center">Loading ... </td>
+                <td colspan="7" class="text-center">{{ 'Loading' | translate }} ... </td>
+            </tr>
+            </tbody>
+            <tbody ng-show="isNotFound">
+            <tr>
+                <td colspan="7" class="text-center">{{ 'Not found' | translate }}</td>
             </tr>
             </tbody>
             <!-- PAGINATION -->

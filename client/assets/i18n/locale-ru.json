@@ -12,5 +12,7 @@
   "lower": "до",
   "FIRST": "ПЕРВАЯ",
   "LAST": "ПОСЛЕДНЯЯ",
-  "Reset filter": "Сброс фильтра"
+  "Reset filter": "Сброс фильтра",
+  "Loading": "Загружаю",
+  "Not found": "Не найдено"
 }

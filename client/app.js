@@ -73,6 +73,7 @@
 
             $scope.callServer = function(tableState) {
                 $scope.isLoading = true;
+                $scope.isNotFound = false;
                 tableStateRef=tableState;
                 var sort = tableState.sort;
                 var predicate = sort.predicate || 'id';
@@ -90,6 +91,11 @@
                         search : search
                     },
                     function(pageable) {
+
+                        if(pageable.content.length == 0){
+                            $scope.isNotFound = true;
+                        }
+
                         $scope.items = pageable.content;
                         tableState.pagination.numberOfPages = pageable.totalPages;
                         $scope.isLoading = false;
