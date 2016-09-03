@@ -1,6 +1,9 @@
-<div class="input-group"><label>{{ 'higher' | translate }}</label>
-    <input class="input-sm form-control" type="number" step="1" ng-model="higher"/>
-</div>
-<div class="input-group"><label>{{ 'lower' | translate }}</label>
-    <input class="input-sm form-control" type="number" step="1" ng-model="lower"/>
+{{ 'higher' | translate }}/{{ 'lower' | translate }}
+<div class="form-inline" >
+    <div class="form-group">
+        <input style="width:80px;" class="input-sm form-control" type="number" step="1" ng-model="higher">
+    </div>
+    <div class="form-group">
+        <input style="width:80px;" class="input-sm form-control" type="number" step="1" ng-model="lower">
+    </div>
 </div>
