@@ -107,6 +107,10 @@
             <tr>
                 <td colspan="7" class="text-center">{{ 'Not found' | translate }}</td>
             </tr>
+            <tbody ng-show="isServerError">
+            <tr>
+                <td colspan="7" class="text-center">{{serverMessage}}</td>
+            </tr>
             </tbody>
             <!-- PAGINATION -->
             <tfoot>

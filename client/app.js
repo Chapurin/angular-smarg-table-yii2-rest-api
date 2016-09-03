@@ -72,8 +72,13 @@
             $scope.itemsByPage = 100;
 
             $scope.callServer = function(tableState) {
+
+
                 $scope.isLoading = true;
                 $scope.isNotFound = false;
+                $scope.isServerError = false;
+                $scope.serverMessage = '';
+
                 tableStateRef=tableState;
                 var sort = tableState.sort;
                 var predicate = sort.predicate || 'id';
@@ -95,11 +100,19 @@
                         if(pageable.content.length == 0){
                             $scope.isNotFound = true;
                         }
-
                         $scope.items = pageable.content;
                         tableState.pagination.numberOfPages = pageable.totalPages;
                         $scope.isLoading = false;
+
+                    },function(error){
+
+                        $scope.isServerError = true;
+                        $scope.isLoading = false;
+                        $scope.serverMessage = error.status+' '+error.statusText;
+
                     });
+
+
             };
 
             $scope.refreshFilter = function(){
@@ -110,6 +123,12 @@
                         $scope.items = pageable.content;
                         tableStateRef.pagination.numberOfPages = pageable.totalPages;
                         $scope.isLoading = false;
+                    },function(error){
+
+                        $scope.isServerError = true;
+                        $scope.isLoading = false;
+                        $scope.serverMessage = error.status+' '+error.statusText;
+
                     });
 
                 tableStateRef.pagination.start = 1;

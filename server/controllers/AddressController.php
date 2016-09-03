@@ -64,7 +64,6 @@ class AddressController extends Controller
     public function actionIndex()
     {
 
-
         $params=$_REQUEST;
         $filter=[];
         $houseRangeFilter=[];
