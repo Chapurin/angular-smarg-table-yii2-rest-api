@@ -15,7 +15,7 @@ use yii\db\Query;
  */
 class AddressController extends Controller
 {
-    
+
 
     public function behaviors()
     {
@@ -124,11 +124,11 @@ class AddressController extends Controller
             ->andFilterWhere(['like', 'country', $filter['country']])
             ->andFilterWhere(['like', 'city', $filter['city']])
             ->andFilterWhere(['like', 'street', $filter['street']])
-            ->andFilterWhere(['<', 'house', $houseRangeFilter['lower']])
-            ->andFilterWhere(['>', 'house', $houseRangeFilter['higher']])
+            ->andFilterWhere(['<=', 'house', $houseRangeFilter['lower']])
+            ->andFilterWhere(['>=', 'house', $houseRangeFilter['higher']])
             ->andFilterWhere(['like', 'postcode', $filter['postcode']])
-            ->andFilterWhere(['<', 'datetime', $datetimeFilter['before']])
-            ->andFilterWhere(['>', 'datetime', $datetimeFilter['after']])
+            ->andFilterWhere(['<=', 'datetime', $datetimeFilter['before']])
+            ->andFilterWhere(['>=', 'datetime', $datetimeFilter['after']])
             ->orderBy($sort)
             ->select('*');
 
