@@ -73,7 +73,6 @@
 
             $scope.callServer = function(tableState) {
 
-
                 $scope.isLoading = true;
                 $scope.isNotFound = false;
                 $scope.isServerError = false;
@@ -117,7 +116,14 @@
 
             $scope.refreshFilter = function(){
 
+                // Сброс фильтров диапазона
+                angular.element(document.querySelectorAll(".number-range input, .date-range input")).val(null);
+
+                $scope.isNotFound = false;
                 $scope.isLoading = true;
+                $scope.isServerError = false;
+                $scope.serverMessage = '';
+
                 Resource.get({},
                     function(pageable) {
                         $scope.items = pageable.content;
@@ -134,6 +140,7 @@
                 tableStateRef.pagination.start = 1;
                 tableStateRef.search.predicateObject = {};
                 tableStateRef.sort.predicate = {};
+
             };
 
         })
