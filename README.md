@@ -2,6 +2,10 @@
 ###**Angular Smart-table with yii2 rest api**
 ------------
 
+###Demo
+http://smart-table-client.onbird.ru/
+
+
 ###Install
 Unzip or colone this repository in Web folder.
 
