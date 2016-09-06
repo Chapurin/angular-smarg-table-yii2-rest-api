@@ -1,12 +1,8 @@
 <?php
-
 namespace app\controllers;
 
 use Yii;
-use app\models\Address;
-use yii\data\ActiveDataProvider;
 use yii\web\Controller;
-use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\Query;
 
@@ -23,9 +19,8 @@ class AddressController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'index'=>['get'],
-                ],
-
+                    'index' => ['get'],
+                ]
             ]
         ];
     }
@@ -41,16 +36,15 @@ class AddressController extends Controller
         } else {
             return $event->isValid;
         }
+
         $verb = Yii::$app->getRequest()->getMethod();
 
         $allowed = array_map('strtoupper', $verbs);
 
         if (!in_array($verb, $allowed)) {
-
             $this->setHeader(400);
-            echo json_encode(['status'=>0, 'error_code'=>400, 'message'=>'Method not allowed'], JSON_PRETTY_PRINT);
+            echo json_encode(['status' => 0, 'error_code' => 400, 'message' => 'Method not allowed'], JSON_PRETTY_PRINT);
             exit;
-
         }
 
         return true;
@@ -63,7 +57,7 @@ class AddressController extends Controller
      */
     public function actionIndex()
     {
-        
+
         $params = $_REQUEST;
 
         $filter = [];
@@ -85,16 +79,13 @@ class AddressController extends Controller
 
         /* Filter elements */
         if (isset($params['search'])) {
-
-            $filter = (array)json_decode($params['search']) + ['house'=>null, 'datetime'=>null];
+            $filter = (array)json_decode($params['search']) + ['house' => null, 'datetime' => null];
             $houseRangeFilter = (array)$filter['house'];
             $datetimeFilter = (array)$filter['datetime'];
         }
 
         if (isset($params['sort']) && preg_match('/^(\w+)$/ui', $params['sort'])) {
-
             $sort = $params['sort'];
-
             if ($params['reverse'] == 'false') {
                 $sort .= ' ASC';
             } else {
@@ -102,9 +93,9 @@ class AddressController extends Controller
             }
         }
 
-        $filter = $filter + ['id'=>null, 'country'=>null, 'city'=>null, 'street'=>null, 'postcode'=>null];
-        $houseRangeFilter = $houseRangeFilter + ['lower'=>null, 'higher'=>null];
-        $datetimeFilter = $datetimeFilter + ['before'=>null, 'after'=>null];
+        $filter = $filter + ['id' => null, 'country' => null, 'city' => null, 'street' => null, 'postcode' => null];
+        $houseRangeFilter = $houseRangeFilter + ['lower' => null, 'higher' => null];
+        $datetimeFilter = $datetimeFilter + ['before' => null, 'after' => null];
 
         $query = new Query;
         $query->offset($offset)
@@ -125,18 +116,18 @@ class AddressController extends Controller
         $command = $query->createCommand();
         $models = $command->queryAll();
         $totalPages = $query->count();
-        $totalPages = ceil($totalPages/$limit);
+        $totalPages = ceil($totalPages / $limit);
 
         $this->setHeader(200);
-        echo json_encode(['content'=>$models, 'totalPages'=>$totalPages], JSON_PRETTY_PRINT);
+        echo json_encode(['content' => $models, 'totalPages' => $totalPages], JSON_PRETTY_PRINT);
 
     }
 
 
     private function setHeader($status)
     {
-        $status_header = 'HTTP/1.1 ' . $status . ' ' . $this->_getStatusCodeMessage($status);
-        $content_type="application/json; charset=utf-8";
+        $status_header = 'HTTP/1.1 ' . $status . ' ' . $this->getStatusCodeMessage($status);
+        $content_type = "application/json; charset=utf-8";
 
         header($status_header);
         header('Access-Control-Allow-Origin: *');
@@ -145,7 +136,7 @@ class AddressController extends Controller
     }
 
 
-    private function _getStatusCodeMessage($status)
+    private function getStatusCodeMessage($status)
     {
         // these could be stored in a .ini file and loaded
         // via parse_ini_file()... however, this will suffice
@@ -162,6 +153,4 @@ class AddressController extends Controller
         ];
         return (isset($codes[$status])) ? $codes[$status] : '';
     }
-
-
 }

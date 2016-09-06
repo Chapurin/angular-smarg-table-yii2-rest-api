@@ -25,13 +25,5 @@ class Address extends \yii\db\ActiveRecord
             [['datetime'], 'date']
         ];
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-        ];
-    }
+    
 }
