@@ -68,17 +68,20 @@
         })
         .controller('TableCtrl', function ($scope, Resource) {
 
+            var filterStyleSelector = '.style-for-table';
             var tableStateRef;
             $scope.itemsByPage = 100;
 
             $scope.callServer = function(tableState) {
 
+
+                tableStateRef=tableState;
                 $scope.isLoading = true;
                 $scope.isNotFound = false;
                 $scope.isServerError = false;
                 $scope.serverMessage = '';
 
-                tableStateRef=tableState;
+                /* Переменные для запроса на сервер */
                 var sort = tableState.sort;
                 var predicate = sort.predicate || 'id';
                 var reverse = sort.reverse || false;
@@ -87,6 +90,8 @@
                 var start = pagination.start || 0;
                 var number = pagination.number || $scope.itemsByPage;
 
+
+                /* Запрос на сервер */
                 Resource.get({
                         page : 1+(start/number),
                         size : number,
@@ -102,6 +107,7 @@
                         $scope.items = pageable.content;
                         tableState.pagination.numberOfPages = pageable.totalPages;
                         $scope.isLoading = false;
+                        
 
                     },function(error){
 
@@ -112,18 +118,44 @@
                     });
 
 
+
+                /* Работа с классами активных фильтров */
+                // Получаю классы активных фильтров
+                var inputs = document.querySelectorAll(".smart-table-filers input, .st-sort-ascent, .st-sort-descent");
+                var selectorsArr = [];
+                
+                inputs.forEach(function(item) {
+                    item = angular.element(item);
+                    if (item.val() || item.hasClass('st-sort-ascent') || item.hasClass('st-sort-descent')) {
+                        var attrClass = item.attr('class-for-filer');
+                        selectorsArr.push(attrClass);
+                    }
+                });
+
+
+                // Добавляю стили к столбцам
+                var style = angular.element(document.querySelector(filterStyleSelector));
+                var str = '.smart-table .' + selectorsArr.join(',.smart-table .') + '{ color: #428bca !important}';
+                str = str + '.smart-table .' + selectorsArr.join(' input, .smart-table .') + ' input{ color: #428bca !important}';
+                style.text(str);
+
             };
 
+
+            /* Сброс фильтров */
             $scope.refreshFilter = function(){
 
                 // Сброс фильтров диапазона
                 angular.element(document.querySelectorAll(".number-range input, .date-range input")).val(null);
+                // Сброс цвета активных столбцов
+                angular.element(document.querySelector(filterStyleSelector)).text('');
 
                 $scope.isNotFound = false;
                 $scope.isLoading = true;
                 $scope.isServerError = false;
                 $scope.serverMessage = '';
 
+                /* Запрос на сервер */
                 Resource.get({},
                     function(pageable) {
                         $scope.items = pageable.content;

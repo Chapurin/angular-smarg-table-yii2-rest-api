@@ -16,8 +16,12 @@
     <script src="assets/angular-translate/tmhDynamicLocale.js"></script>
     <script src="app.js"></script>
     <style>
+        .cell-datetime.active{
+            color: #428bca;
+        }
+
         .st-sort-ascent,.st-sort-descent{
-            color: #2aabd2;
+            color: #428bca;
         }
         .table-header th{
             cursor: pointer;
@@ -29,6 +33,7 @@
             content: '\25BC';
         }
     </style>
+    <style class="style-for-table"></style>
 </head>
 
 <body>
@@ -59,7 +64,7 @@
 
     <form ng-controller="TableCtrl">
 
-        <table class="table table-bordered table-striped" st-table="items" st-pipe="callServer">
+        <table class="table table-bordered table-striped smart-table" st-table="items" st-pipe="callServer">
             <thead>
             <tr class="table-header">
                 <th colspan="7"><button class="pull-right btn btn-xs" ng-click="refreshFilter();"><span class="glyphicon glyphicon-refresh"></span> {{ 'Reset filter' | translate }}</button></th>
@@ -67,35 +72,35 @@
 
             <!-- HEADERS -->
             <tr class="table-header">
-                <th style="width: 100px" st-sort="id">ID</th>
-                <th style="width: 200px" st-sort="country">{{ 'Country' | translate }}</th>
-                <th style="width: 120px" st-sort="city">{{ 'City' | translate }}</th>
-                <th st-sort="street">{{ 'Street' | translate }}</th>
-                <th style="width: 185px" st-sort="house">{{ 'House' | translate }}</th>
-                <th style="width: 100px" st-sort="postcode">{{ 'Postcode' | translate }}</th>
-                <th style="width: 300px" st-sort="datetime">{{ 'Date' | translate }}</th>
+                <th class="cell-id" class-for-filer="cell-id" style="width: 100px" st-sort="id">ID</th>
+                <th class="cell-country" class-for-filer="cell-country" style="width: 200px" st-sort="country">{{ 'Country' | translate }}</th>
+                <th class="cell-city" class-for-filer="cell-city" style="width: 120px" st-sort="city">{{ 'City' | translate }}</th>
+                <th class="cell-street" class-for-filer="cell-street" st-sort="street">{{ 'Street' | translate }}</th>
+                <th class="cell-house" class-for-filer="cell-house" style="width: 185px" st-sort="house">{{ 'House' | translate }}</th>
+                <th class="cell-postcode" class-for-filer="cell-postcode" style="width: 100px" st-sort="postcode">{{ 'Postcode' | translate }}</th>
+                <th class="cell-datetime" class-for-filer="cell-datetime" style="width: 300px" st-sort="datetime">{{ 'Date' | translate }}</th>
             </tr>
-            <tr>
-                <th><input st-search="id" class="input-sm form-control" type="search"/></th>
-                <th><input st-search="country" class="input-sm form-control" type="search"/></th>
-                <th><input st-search="city" class="input-sm form-control" type="search"/></th>
-                <th><input st-search="street" class="input-sm form-control" type="search"/></th>
-                <th><st-number-range predicate="house" lower="query.lower" higher="query.higher"></st-number-range></th>
-                <th><input st-search="postcode" class="input-sm form-control" type="search"/></th>
-                <th><st-date-range predicate="datetime" before="query.before" after="query.after"></st-date-range></th>
+            <tr class="smart-table-filers">
+                <th class="cell-id"><input st-search="id" class-for-filer="cell-id" class="input-sm form-control" type="search"/></th>
+                <th class="cell-country"><input st-search="country" class-for-filer="cell-country" class="input-sm form-control" type="search"/></th>
+                <th class="cell-city"><input st-search="city" class-for-filer="cell-city" class="input-sm form-control" type="search"/></th>
+                <th class="cell-street"><input st-search="street" class-for-filer="cell-street" class="input-sm form-control" type="search"/></th>
+                <th class="cell-house"><st-number-range predicate="house" lower="query.lower" higher="query.higher"></st-number-range></th>
+                <th class="cell-postcode"><input st-search="postcode" class-for-filer="cell-postcode" class="input-sm form-control" type="search"/></th>
+                <th class="cell-datetime"><st-date-range predicate="datetime" before="query.before" after="query.after"></st-date-range></th>
 
             </tr>
             </thead>
             <!-- CONTENT -->
             <tbody ng-show="!isLoading">
             <tr ng-repeat="row in items">
-                <td>{{row.id}}</td>
-                <td>{{row.country}}</td>
-                <td>{{row.city}}</td>
-                <td>{{row.street}}</td>
-                <td>{{row.house}}</td>
-                <td>{{row.postcode}}</td>
-                <td>{{row.datetime}}</td>
+                <td class="cell-id">{{row.id}}</td>
+                <td class="cell-country">{{row.country}}</td>
+                <td class="cell-city">{{row.city}}</td>
+                <td class="cell-street">{{row.street}}</td>
+                <td class="cell-house">{{row.house}}</td>
+                <td class="cell-postcode">{{row.postcode}}</td>
+                <td class="cell-datetime">{{row.datetime}}</td>
             </tr>
             </tbody>
             <tbody ng-show="isLoading">
