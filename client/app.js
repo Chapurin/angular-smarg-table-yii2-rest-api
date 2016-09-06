@@ -1,4 +1,4 @@
-﻿(function (ng) {
+(function (ng) {
     angular.module(
         'app',
         [
@@ -123,14 +123,15 @@
                 // Получаю классы активных фильтров
                 var inputs = document.querySelectorAll(".smart-table-filers input, .st-sort-ascent, .st-sort-descent");
                 var selectorsArr = [];
+                var i;
                 
-                inputs.forEach(function(item) {
-                    item = angular.element(item);
+                for (i = 0; i < inputs.length; i++) {
+                    item = angular.element(inputs[i]);
                     if (item.val() || item.hasClass('st-sort-ascent') || item.hasClass('st-sort-descent')) {
                         var attrClass = item.attr('class-for-filer');
                         selectorsArr.push(attrClass);
                     }
-                });
+                }
 
 
                 // Добавляю стили к столбцам
