@@ -48,7 +48,7 @@ class AddressController extends Controller
         if (!in_array($verb, $allowed)) {
 
             $this->setHeader(400);
-            echo json_encode(array('status'=>0,'error_code'=>400,'message'=>'Method not allowed'),JSON_PRETTY_PRINT);
+            echo json_encode(['status'=>0, 'error_code'=>400, 'message'=>'Method not allowed'], JSON_PRETTY_PRINT);
             exit;
 
         }
@@ -64,58 +64,52 @@ class AddressController extends Controller
     public function actionIndex()
     {
 
-        $params=$_REQUEST;
-        $filter=[];
-        $houseRangeFilter=[];
-        $datetimeFilter=[];
-        $sort="";
-        $page=1;
-        $limit=100;
+        ini_set('display_errors', 'On'); // сообщения с ошибками будут показываться
+        error_reporting(E_ALL);
 
-        if(isset($params['page']) && is_numeric($params['page']))
-        {
-            $page=$params['page'];
+        $params = $_REQUEST;
+
+        $filter = [];
+        $houseRangeFilter = [];
+        $datetimeFilter = [];
+        $sort = "";
+        $page = 1;
+        $limit = 100;
+
+        if (isset($params['page']) && is_numeric($params['page'])) {
+            $page = $params['page'];
         }
 
-
-        if(isset($params['size']) && is_numeric($params['size']) && $params['size'] <= 200)
-        {
-            $limit=$params['size'];
+        if (isset($params['size']) && is_numeric($params['size']) && $params['size'] <= 200) {
+            $limit = $params['size'];
         }
-        $offset=$limit*($page-1);
-
+        $offset = $limit * ($page - 1);
 
 
         /* Filter elements */
-        if(isset($params['search']))
-        {
-            $filter=(array)json_decode($params['search']);
-            if(!empty($filter))
-            {
-                $houseRangeFilter = (array)$filter['house'];
-                $datetimeFilter = (array)$filter['datetime'];
-            }
+        if (isset($params['search'])) {
 
+            $filter = (array)json_decode($params['search']) + ['house'=>null, 'datetime'=>null];
+            $houseRangeFilter = (array)$filter['house'];
+            $datetimeFilter = (array)$filter['datetime'];
         }
 
+        if (isset($params['sort']) && preg_match('/^(\w+)$/ui', $params['sort'])) {
 
-        if(isset($params['sort']) && preg_match('/A-z/',$params['search']))
-        {
             $sort = $params['sort'];
 
-            if($params['reverse']=='false')
-            {
+            if ($params['reverse'] == 'false') {
                 $sort .= ' ASC';
-            }else{
+            } else {
                 $sort .= ' DESC';
             }
-
-
-
         }
 
+        $filter = $filter + ['id'=>null, 'country'=>null, 'city'=>null, 'street'=>null, 'postcode'=>null];
+        $houseRangeFilter = $houseRangeFilter + ['lower'=>null, 'higher'=>null];
+        $datetimeFilter = $datetimeFilter + ['before'=>null, 'after'=>null];
 
-        $query=new Query;
+        $query = new Query;
         $query->offset($offset)
             ->limit($limit)
             ->from('address')
@@ -131,16 +125,13 @@ class AddressController extends Controller
             ->orderBy($sort)
             ->select('*');
 
-
-
         $command = $query->createCommand();
         $models = $command->queryAll();
-        $totalItems = $query->count();
-        $totalItems = $totalItems/$limit;
-
+        $totalPages = $query->count();
+        $totalPages = ceil($totalPages/$limit);
 
         $this->setHeader(200);
-        echo json_encode(['content'=>$models,'totalPages'=>$totalItems],JSON_PRETTY_PRINT);
+        echo json_encode(['content'=>$models, 'totalPages'=>$totalPages], JSON_PRETTY_PRINT);
 
     }
 
@@ -153,7 +144,6 @@ class AddressController extends Controller
         header($status_header);
         header('Access-Control-Allow-Origin: *');
         header('Access-Control-Allow-Methods: GET');
-        header('Access-Control-Expose-Headers: Action-Guid');
         header('Content-type: ' . $content_type);
     }
 
@@ -163,7 +153,7 @@ class AddressController extends Controller
         // these could be stored in a .ini file and loaded
         // via parse_ini_file()... however, this will suffice
         // for an example
-        $codes = Array(
+        $codes = [
             200 => 'OK',
             400 => 'Bad Request',
             401 => 'Unauthorized',
@@ -172,7 +162,7 @@ class AddressController extends Controller
             404 => 'Not Found',
             500 => 'Internal Server Error',
             501 => 'Not Implemented',
-        );
+        ];
         return (isset($codes[$status])) ? $codes[$status] : '';
     }
 
