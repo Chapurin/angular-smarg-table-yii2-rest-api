@@ -63,10 +63,7 @@ class AddressController extends Controller
      */
     public function actionIndex()
     {
-
-        ini_set('display_errors', 'On'); // сообщения с ошибками будут показываться
-        error_reporting(E_ALL);
-
+        
         $params = $_REQUEST;
 
         $filter = [];
