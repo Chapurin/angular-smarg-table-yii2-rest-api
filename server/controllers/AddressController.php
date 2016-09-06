@@ -120,7 +120,6 @@ class AddressController extends Controller
 
         $this->setHeader(200);
         echo json_encode(['content' => $models, 'totalPages' => $totalPages], JSON_PRETTY_PRINT);
-
     }
 
 
